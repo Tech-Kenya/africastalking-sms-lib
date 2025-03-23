@@ -1,4 +1,4 @@
-package main
+package africastalking
 
 // SMSClient holds API credentials
 type SMSClient struct {

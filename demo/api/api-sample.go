@@ -3,12 +3,12 @@ package api
 import (
 	"log"
 	"net/http"
-
+	"github.com/Tech-Kenya/africastalking-sms-lib"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// client, err :=
+	client, err := 
 	r := gin.Default()
 	r.POST("/send-sms", sendSMS)
 	log.Println("server running on http://localhost:8080")

@@ -7,7 +7,7 @@ This is a Golang library for sending SMS messages using the Africa's Talking API
 To install the library, use the following command:
 
 ```bash
-go get github.com/Tech-Kenya/africastalking_sms_go
+go get github.com/Tech-Kenya/africastalking-sms-lib@latest
 ```
 
 ## To get started locally
@@ -15,13 +15,13 @@ go get github.com/Tech-Kenya/africastalking_sms_go
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Tech-Kenya/africastalking_sms_go.git
+git clone https://github.com/Tech-Kenya/africastalking-sms-lib.git
 ```
 
 2. cd into the project directory
 
 ```bash
-africastalking_sms_go
+africastalking-sms-lib
 ```
 
 3. Copy the `.env.example` file to `.env` and fill in your Africa's Talking credentials:
@@ -46,4 +46,23 @@ go mod tidy
 ```bash
 go run demo/cli.go
 go run demo/api.go
+```
+
+## Usage
+
+```go
+package main
+
+import (
+    "log"
+    "github.com/Tech-Kenya/africastalking-sms-lib"
+)
+
+func main() {
+    client := africastalking.NewClient("sandbox", "your_api_key")
+    err := client.SendSMS("+254712345678", "Hello!", "30216")
+    if err != nil {
+    log.Fatal(err)
+    }
+}
 ```
