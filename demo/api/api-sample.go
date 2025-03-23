@@ -32,7 +32,7 @@ func main() {
 // sendSMS post request endpoint
 func (h *Handler) sendSMS(c *gin.Context) {
 	type body struct {
-		Recepient string `json:"recepient" binding:"required"`
+		Recipient string `json:"recipient" binding:"required"`
 		Message   string `json:"message" binding:"required"`
 	}
 	var reqBody body
@@ -42,7 +42,7 @@ func (h *Handler) sendSMS(c *gin.Context) {
 		})
 		return
 	}
-	resp, err := h.Client.SendSMS(reqBody.Recepient, reqBody.Message)
+	resp, err := h.Client.SendSMS(reqBody.Recipient, reqBody.Message)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to send SMS", "details": err.Error(),

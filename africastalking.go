@@ -35,7 +35,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// NewClient initializes a new Africa's Talking SMS client.
+// NewSMSClient initializes a new Africa's Talking SMS client.
 func NewSMSClient() (*SMSClient, error) {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
@@ -86,7 +86,12 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
 
 	// Read response
 	body, err := io.ReadAll(resp.Body)
