@@ -22,7 +22,7 @@ func NewSMSClient() (*SMSClient, error) {
 	apiKey := os.Getenv("atApiKey")
 	username := os.Getenv("atUserName")
 	atShortCode := os.Getenv("atShortCode")
-	if apiKey == "" || username == "" {
+	if apiKey == "" || username == "" || atShortCode == "" {
 		return nil, errors.New("missing API credentials in environment variables")
 	}
 	return &SMSClient{APIKey: apiKey, Username: username, ShortCode: atShortCode, Env: "production"}, nil
