@@ -47,25 +47,30 @@ go mod tidy
 5. Run the example:
 
 ```bash
-go run demo/cli.go
-go run demo/api.go
+go run demo/cli-sample.go
 ```
 
 ## Usage
 
-```go
-package main
 
-import (
-    "log"
-    "github.com/Tech-Kenya/africastalking-sms-lib"
-)
+see demo/api for a simple API example
 
-func main() {
-    client := africastalking.NewClient("sandbox", "your_api_key")
-    err := client.SendSMS("+254712345678", "Hello!", "30216")
-    if err != nil {
-    log.Fatal(err)
-    }
-}
+
+POST Request
+
+
+```bash
+curl -X POST http://localhost:8080/send-sms \
+     -H "Content-Type: application/json" \
+     -d '{
+           "recepient": "Your number",
+           "message": "Hello from Gin API"
+         }'
 ```
+
+Response
+```json
+{"Message":"Sent to 1/1 Total Cost: KES 0.8000 Message parts: 1","Recipients":[{"number":"+254....","cost":"KES 0.8000","status":"Success","statusCode":101,"messageId":"ATXid_ad8a62b0680a41351b1ea383b9b66fd1"}]}
+```
+
+![sample](demo/image.png)

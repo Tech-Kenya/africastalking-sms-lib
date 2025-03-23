@@ -18,14 +18,14 @@ type SMSClient struct {
 // Response struct for JSON parsing
 type SMSResponse struct {
 	SMSMessageData struct {
-		Message    string `json:"Message"`
+		Message    string `json:"message"`
 		Recipients []struct {
 			Number     string `json:"number"`
 			Cost       string `json:"cost"`
 			Status     string `json:"status"`
 			StatusCode int    `json:"statusCode"`
 			MessageID  string `json:"messageId"`
-		} `json:"Recipients"`
+		} `json:"recipients"`
 	} `json:"SMSMessageData"`
 }
 

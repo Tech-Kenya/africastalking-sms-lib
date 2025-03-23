@@ -8,11 +8,17 @@
 //	)
 //
 //	func main() {
-//		client := africastalking.NewClient("sandbox", "your_api_key")
-//		err := client.SendSMS("+254712345678", "Hello from Africa's Talking!", "30216")
+//		will load .env variables directly
+//		client := africastalking.NewSMSClient()
 //		if err != nil {
 //			log.Fatal(err)
 //		}
+//		resp, err := client.SendSMS("+254712345678", "Hello from Africa's Talking!")
+//		if err != nil{
+//			log.Fatal(err)
+//		}
+//
+//		log.Println(resp)
 //	}
 package africastalking
 
@@ -20,6 +26,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -57,7 +64,6 @@ func NewSMSClient() (*SMSClient, error) {
 // Parameters:
 // - recipient: Phone number of the recipient in international format (e.g., +254712345678)
 // - message: The text message content
-// - shortcode: The shortcode or sender ID used for sending
 func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	apiURL := "https://api.sandbox.africastalking.com/version1/messaging"
 	data := url.Values{}
@@ -95,7 +101,13 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	}
 
 	if len(smsResponse.SMSMessageData.Recipients) == 0 || smsResponse.SMSMessageData.Recipients[0].Status != "Success" {
-		return nil, errors.New("SMS sending failed")
+		return nil, errors.New("SMS sending failed, check variables")
+	}
+
+	// ensure api response returns code 200
+	if smsResponse.SMSMessageData.Recipients[0].StatusCode != 200 {
+		return nil, fmt.Errorf("SMS sending failed for %s: status=%s, statusCode=%d",
+			smsResponse.SMSMessageData.Recipients[0].Number, smsResponse.SMSMessageData.Recipients[0].Status, smsResponse.SMSMessageData.Recipients[0].StatusCode)
 	}
 
 	return &smsResponse, nil

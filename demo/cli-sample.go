@@ -7,13 +7,14 @@ import (
 	"github.com/Tech-Kenya/africastalking-sms-lib"
 )
 
+// go run .
 func main() {
 	client, err := africastalking.NewSMSClient()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	response, err := client.SendSMS("*************", "Hello from Go!")
+	// change the phone number
+	response, err := client.SendSMS("+254...", "Hello from Go!")
 	if err != nil {
 		log.Fatal("Failed to send SMS:", err)
 	}
