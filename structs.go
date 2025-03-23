@@ -1,11 +1,18 @@
 package africastalking
 
+import "net/http"
+
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 // SMSClient holds API credentials
 type SMSClient struct {
-	APIKey    string
-	Username  string
-	ShortCode string
-	Env       string
+	APIKey     string
+	Username   string
+	ShortCode  string
+	Env        string
+	HTTPClient HTTPClient
 }
 
 // Response struct for JSON parsing

@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -33,7 +32,7 @@ import (
 func NewSMSClient() (*SMSClient, error) {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+		return nil, errors.New("missing API credentials in environment variables")
 	}
 
 	apiKey := os.Getenv("atApiKey")
@@ -42,14 +41,15 @@ func NewSMSClient() (*SMSClient, error) {
 	if apiKey == "" || username == "" || atShortCode == "" {
 		return nil, errors.New("missing API credentials in environment variables")
 	}
-	return &SMSClient{APIKey: apiKey, Username: username, ShortCode: atShortCode, Env: "production"}, nil
+	return &SMSClient{APIKey: apiKey, Username: username, ShortCode: atShortCode,
+		Env: "production", HTTPClient: &http.Client{}}, nil
 }
 
 // SendSMS sends an SMS message to the specified recipient.
 //
 // Example:
 //
-//	err := client.SendSMS("+254712345678", "Hello!", "30216")
+//	err := client.SendSMS("+254712345678", "Hello!")
 //	if err != nil {
 //		log.Fatal(err)
 //	}
@@ -76,8 +76,7 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("apiKey", c.APIKey)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +92,10 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	var smsResponse SMSResponse
 	if err := json.Unmarshal(body, &smsResponse); err != nil {
 		return nil, err
+	}
+
+	if len(smsResponse.SMSMessageData.Recipients) == 0 || smsResponse.SMSMessageData.Recipients[0].Status != "Success" {
+		return nil, errors.New("SMS sending failed")
 	}
 
 	return &smsResponse, nil

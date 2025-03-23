@@ -33,6 +33,9 @@ cp .env.example .env
 `Ensure you have Golang 1,18+ installed on your machine and you have an API key from Africa's Talking.`
 
 - Shortcode or Sender ID: <https://account.africastalking.com/apps/sandbox/sms/shortcodes/create>
+
+###### note that after generating a new API key, it might take upto 15 mins for it to become active
+
 - API Key: <https://account.africastalking.com/apps/sandbox/settings/key>
 
 4. Install the dependencies:
