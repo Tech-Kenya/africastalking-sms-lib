@@ -1,3 +1,7 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/Tech-Kenya/africastalking-sms-lib)](https://goreportcard.com/report/github.com/Tech-Kenya/africastalking-sms-lib)
+![Go Version](https://img.shields.io/badge/Go-1.24-blue?style=flat&logo=go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Tech-Kenya/africastalking-sms-lib.svg)](https://pkg.go.dev/github.com/Tech-Kenya/africastalking-sms-lib)
+
 ## Africastalking Golang SMS library
 
 This is a Golang library for sending SMS messages using the Africa's Talking API. It provides a simple interface to send messages, check message status, and manage contacts.
@@ -54,7 +58,13 @@ go run demo/cli-sample.go
 
 
 see demo/api for a simple API example
+```
+go mod tidy #download dependencies
+```
 
+```
+go run . #start the api server
+```
 
 POST Request
 
