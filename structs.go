@@ -11,7 +11,7 @@ type SMSClient struct {
 	APIKey     string
 	Username   string
 	ShortCode  string
-	Env        string
+	isSandbox  string
 	HTTPClient HTTPClient
 }
 

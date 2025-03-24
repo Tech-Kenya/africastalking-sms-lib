@@ -25,13 +25,14 @@ git clone https://github.com/Tech-Kenya/africastalking-sms-lib.git
 2. cd into the project directory
 
 ```bash
-africastalking-sms-lib
+cd africastalking-sms-lib/demo
 ```
 
 3. Copy the `.env.example` file to `.env` and fill in your Africa's Talking credentials:
 
 ```bash
 cp .env.example .env
+cp .env.example .envrc
 ```
 
 `Ensure you have Golang 1,18+ installed on your machine and you have an API key from Africa's Talking.`
@@ -51,18 +52,22 @@ go mod tidy
 5. Run the example:
 
 ```bash
-go run demo/cli-sample.go
+direnv allow # if you are using direnv
+# or
+export $(cat .env | xargs) # if you are not using direnv
+#then
+go run .
 ```
 
 ## Usage
 
 
 see demo/api for a simple API example
-```
+```bash
 go mod tidy #download dependencies
 ```
 
-```
+```bash
 go run . #start the api server
 ```
 
@@ -84,3 +89,9 @@ Response
 ```
 
 ![sample](demo/image.png)
+
+## Known bugs
+
+```json
+2025/03/24 11:35:51 Failed to send SMS:failed to parse API response: invalid character 'T' looking for beginning of value
+```

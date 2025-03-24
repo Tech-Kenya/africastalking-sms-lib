@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/Tech-Kenya/africastalking-sms-lib"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 type Handler struct {
@@ -14,7 +16,15 @@ type Handler struct {
 }
 
 func main() {
-	client, err := africastalking.NewSMSClient()
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatalf("no .env file found, err %v", err)
+	}
+	apiKey := os.Getenv("atApiKey")
+	username := os.Getenv("atUserName")
+	atShortCode := os.Getenv("atShortCode")
+	sandbox := os.Getenv("sandbox")
+
+	client, err := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
 
 	if err != nil {
 		log.Fatal(err)

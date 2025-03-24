@@ -8,8 +8,10 @@
 //	)
 //
 //	func main() {
-//		will load .env variables directly
-//		client := africastalking.NewSMSClient()
+//		apiKey = os.Getenv("atApiKey")
+//		username = os.Getenv("atUserName")
+//		atShortCode = os.Getenv("atShortCode")
+//		client := africastalking.NewSMSClient(apiKey, username, atShortCode)
 //		if err != nil {
 //			log.Fatal(err)
 //		}
@@ -30,26 +32,24 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
-
-	"github.com/joho/godotenv"
+	"strings"
 )
 
 // NewSMSClient initializes a new Africa's Talking SMS client.
-func NewSMSClient() (*SMSClient, error) {
-	// Load environment variables
-	if err := godotenv.Load(); err != nil {
-		return nil, errors.New("missing API credentials in environment variables")
+// ensure .env has the below variables
+func NewSMSClient(apiKey, username, atShortCode, sandbox string) (*SMSClient, error) {
+	// Ensure all required values are set
+	if apiKey == "" || username == "" || atShortCode == "" || sandbox == "" {
+		return nil, errors.New("missing API credentials: provide API key, username, shortcode and sandbox value")
 	}
 
-	apiKey := os.Getenv("atApiKey")
-	username := os.Getenv("atUserName")
-	atShortCode := os.Getenv("atShortCode")
-	if apiKey == "" || username == "" || atShortCode == "" {
-		return nil, errors.New("missing API credentials in environment variables")
-	}
-	return &SMSClient{APIKey: apiKey, Username: username, ShortCode: atShortCode,
-		Env: "production", HTTPClient: &http.Client{}}, nil
+	return &SMSClient{
+		APIKey:     apiKey,
+		Username:   username,
+		ShortCode:  atShortCode,
+		isSandbox:  sandbox,
+		HTTPClient: &http.Client{},
+	}, nil
 }
 
 // SendSMS sends an SMS message to the specified recipient.
@@ -65,7 +65,20 @@ func NewSMSClient() (*SMSClient, error) {
 // - recipient: Phone number of the recipient in international format (e.g., +254712345678)
 // - message: The text message content
 func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
+	// Determine API URL based on environment
+	// default is sandbox
 	apiURL := "https://api.sandbox.africastalking.com/version1/messaging"
+	// production url
+	if c.isSandbox == "false" {
+		apiURL = "https://api.africastalking.com/version1/messaging"
+	}
+
+	// Validate inputs
+	if strings.TrimSpace(recipient) == "" || strings.TrimSpace(message) == "" {
+		return nil, errors.New("recipient and message cannot be empty")
+	}
+
+	// Prepare request data
 	data := url.Values{}
 	data.Set("username", c.Username)
 	data.Set("to", recipient)
@@ -75,44 +88,43 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	// Create HTTP request
 	req, err := http.NewRequest("POST", apiURL, bytes.NewBufferString(data.Encode()))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("apiKey", c.APIKey)
 
+	// Execute HTTP request
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to send request: %v", err)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
-		}
-	}(resp.Body)
+	defer resp.Body.Close()
 
-	// Read response
+	// Read API response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to read API response: %v", err)
 	}
 
 	// Parse JSON response
 	var smsResponse SMSResponse
 	if err := json.Unmarshal(body, &smsResponse); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse API response: %v", err)
 	}
 
-	if len(smsResponse.SMSMessageData.Recipients) == 0 || smsResponse.SMSMessageData.Recipients[0].Status != "Success" {
-		return nil, errors.New("SMS sending failed, check variables")
+	// Ensure API response contains recipients
+	if len(smsResponse.SMSMessageData.Recipients) == 0 {
+		return nil, errors.New("API response is missing recipient details")
 	}
 
-	// ensure api response returns code 200
-	if smsResponse.SMSMessageData.Recipients[0].StatusCode != 200 {
+	recipientData := smsResponse.SMSMessageData.Recipients[0]
+
+	// Handle unsuccessful SMS sending
+	if recipientData.StatusCode != 101 { // Adjust status code based on API documentation
 		return nil, fmt.Errorf("SMS sending failed for %s: status=%s, statusCode=%d",
-			smsResponse.SMSMessageData.Recipients[0].Number, smsResponse.SMSMessageData.Recipients[0].Status, smsResponse.SMSMessageData.Recipients[0].StatusCode)
+			recipientData.Number, recipientData.Status, recipientData.StatusCode)
 	}
 
 	return &smsResponse, nil
