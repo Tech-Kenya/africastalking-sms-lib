@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Tech-Kenya/africastalking-sms-lib"
+	"github.com/tech-kenya/africastalking-sms-lib"
 )
 
 // go run .

@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Tech-Kenya/africastalking-sms-lib"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/tech-kenya/africastalking-sms-lib"
 )
 
 type Handler struct {
