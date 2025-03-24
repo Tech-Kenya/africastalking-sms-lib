@@ -78,7 +78,7 @@ POST Request
 curl -X POST http://localhost:8080/send-sms \
      -H "Content-Type: application/json" \
      -d '{
-           "recepient": "Your number",
+           "recipient": "Your number",
            "message": "Hello from Gin API"
          }'
 ```

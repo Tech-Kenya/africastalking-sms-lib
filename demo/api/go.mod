@@ -3,7 +3,7 @@ module sample
 go 1.24.1
 
 require (
-	github.com/Tech-Kenya/africastalking-sms-lib v1.0.2
+	github.com/Tech-Kenya/africastalking-sms-lib v1.0.4
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
 )
