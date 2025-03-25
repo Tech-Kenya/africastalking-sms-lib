@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 	"os"
-	"github.com/tech-kenya/africastalking-sms"
+
+	africastalking "github.com/tech-kenya/africastalkingsms"
 )
 
 // go run .
@@ -12,9 +13,8 @@ func main() {
 	username := os.Getenv("atUserName")
 	atShortCode := os.Getenv("atShortCode")
 	sandbox := os.Getenv("sandbox")
-	log.Println(sandbox)
-	client, err := africastalking-sms.
-		log.Println(client)
+	client, err := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
+	log.Println(client)
 	if err != nil {
 		log.Fatal(err)
 	}

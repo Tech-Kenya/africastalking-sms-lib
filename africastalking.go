@@ -109,13 +109,21 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 		return nil, fmt.Errorf("failed to read API response: %v", err)
 	}
 
+	// Debug: Print Raw Response
+	fmt.Println("Raw API Response:", string(body))
+
+	// Check if response starts with '{' (indicating JSON)
+	if len(body) == 0 || (body[0] != '{' && body[0] != '[') {
+		return nil, fmt.Errorf("unexpected API response format: %s", string(body))
+	}
+
 	// Parse JSON response
 	var smsResponse SMSResponse
 	if err := json.Unmarshal(body, &smsResponse); err != nil {
 		return nil, fmt.Errorf("failed to parse API response: %v", err)
 	}
 
-	// Ensure API response contains recipients
+	// Validate the parsed response
 	if len(smsResponse.SMSMessageData.Recipients) == 0 {
 		return nil, errors.New("API response is missing recipient details")
 	}

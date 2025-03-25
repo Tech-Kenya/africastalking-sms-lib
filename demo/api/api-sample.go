@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/tech-kenya/africastalking-sms-lib"
+	africastalking "github.com/tech-kenya/africastalkingsms"
 )
 
 type Handler struct {
