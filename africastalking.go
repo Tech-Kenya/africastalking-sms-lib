@@ -11,7 +11,8 @@
 //		apiKey = os.Getenv("atApiKey")
 //		username = os.Getenv("atUserName")
 //		atShortCode = os.Getenv("atShortCode")
-//		client := africastalking.NewSMSClient(apiKey, username, atShortCode)
+//		sandbox = os.Getenv("sandboxEnv")
+//		client := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
 //		if err != nil {
 //			log.Fatal(err)
 //		}
@@ -22,7 +23,7 @@
 //
 //		log.Println(resp)
 //	}
-package africastalking
+package africastalking // import "github.com/tech-kenya/africastalking-sms"
 
 import (
 	"bytes"
@@ -122,7 +123,7 @@ func (c *SMSClient) SendSMS(recipient, message string) (*SMSResponse, error) {
 	recipientData := smsResponse.SMSMessageData.Recipients[0]
 
 	// Handle unsuccessful SMS sending
-	if recipientData.StatusCode != 101 { // Adjust status code based on API documentation
+	if recipientData.StatusCode != 101 {
 		return nil, fmt.Errorf("SMS sending failed for %s: status=%s, statusCode=%d",
 			recipientData.Number, recipientData.Status, recipientData.StatusCode)
 	}

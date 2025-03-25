@@ -1,4 +1,4 @@
-package africastalking
+package africastalking // import "github.com/tech-kenya/africastalking-sms"
 
 import "net/http"
 
