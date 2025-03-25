@@ -14,6 +14,39 @@ To install the library, use the following command:
 go get github.com/tech-kenya/africastalkingsms@latest
 ```
 
+Sample code to send an SMS:
+```go
+package main
+
+import (
+ "log"
+ "os"
+
+ africastalking "github.com/tech-kenya/africastalkingsms"
+)
+
+func main() {
+ apiKey := os.Getenv("atApiKey")
+ username := os.Getenv("atUserName")
+ atShortCode := os.Getenv("atShortCode")
+ sandbox := os.Getenv("sandboxEnv")
+
+ client, err := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
+ if err != nil {
+  log.Fatal(err)
+ }
+ resp, err := client.SendSMS("+254712345678", "Hello from Africa's Talking!")
+ if err != nil {
+  log.Fatal(err)
+ }
+
+ log.Println(resp)
+}
+
+```
+
+
+
 ## To get started locally
 
 1. Clone the repository:
