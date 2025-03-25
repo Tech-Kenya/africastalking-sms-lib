@@ -37,11 +37,14 @@ cp .env.example .envrc
 
 `Ensure you have Golang 1,18+ installed on your machine and you have an API key from Africa's Talking.`
 
+- Register an account: <https://account.africastalking.com/auth/register>
 - Shortcode or Sender ID: <https://account.africastalking.com/apps/sandbox/sms/shortcodes/create>
-
-###### note that after generating a new API key, it might take upto 15 mins for it to become active
-
 - API Key: <https://account.africastalking.com/apps/sandbox/settings/key>
+- See more: <https://www.postman.com/africastalking/africa-s-talking-apis/overview>
+- Launch a simulator: <https://developers.africastalking.com/simulator>
+
+###### note that after generating a new API key, it might take upto 15 mins for it to become active <https://help.africastalking.com/en/articles/1036048-why-am-i-getting-the-error-supplied-authentication-is-invalid> optionally, save the old api key, then create a new one, but continue using the old key
+
 
 4. Install the dependencies:
 
@@ -52,16 +55,14 @@ go mod tidy
 5. Run the example:
 
 ```bash
-direnv allow # if you are using direnv
-# or
-export $(cat .env | xargs) # if you are not using direnv
+export $(cat .env | xargs) 
 #then
 go run .
 ```
 
 ## Usage
 
-see demo/api for a simple API example
+see demo/api for a simple API example (remember to edit .env file with your credentials)
 
 ```bash
 go mod tidy #download dependencies

@@ -16,7 +16,7 @@ type Handler struct {
 }
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
+	if err := godotenv.Load(); err != nil {
 		log.Fatalf("no .env file found, err %v", err)
 	}
 	apiKey := os.Getenv("atApiKey")

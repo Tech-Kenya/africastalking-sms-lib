@@ -2,17 +2,19 @@
 //
 // Example usage:
 //
+//	package main
+//
 //	import (
 //		"log"
 //		"github.com/tech-kenya/africastalkingsms"
 //	)
 //
 //	func main() {
-//		apiKey = os.Getenv("atApiKey")
-//		username = os.Getenv("atUserName")
-//		atShortCode = os.Getenv("atShortCode")
-//		sandbox = os.Getenv("sandboxEnv")
-//		client := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
+//		apiKey := os.Getenv("atApiKey")
+//		username := os.Getenv("atUserName")
+//		atShortCode := os.Getenv("atShortCode")
+//		sandbox := os.Getenv("sandboxEnv")
+//		client, err := africastalking.NewSMSClient(apiKey, username, atShortCode, sandbox)
 //		if err != nil {
 //			log.Fatal(err)
 //		}
