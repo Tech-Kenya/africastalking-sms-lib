@@ -4,7 +4,7 @@
 //
 //	import (
 //		"log"
-//		"github.com/Tech-Kenya/africastalking-sms-lib"
+//		"github.com/tech-kenya/africastalkingsms"
 //	)
 //
 //	func main() {
@@ -23,7 +23,7 @@
 //
 //		log.Println(resp)
 //	}
-package africastalking // import "github.com/tech-kenya/africastalking-sms"
+package africastalking // import "github.com/tech-kenya/africastalkingsms"
 
 import (
 	"bytes"
