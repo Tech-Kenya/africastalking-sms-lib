@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Tech-Kenya/africastalking-sms-lib)](https://goreportcard.com/report/github.com/Tech-Kenya/africastalking-sms-lib)
 ![Go Version](https://img.shields.io/badge/Go-1.24-blue?style=flat&logo=go)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Tech-Kenya/africastalking-sms-lib.svg)](https://pkg.go.dev/github.com/Tech-Kenya/africastalking-sms-lib)
+[![Go Reference](https://pkg.go.dev/badge/github.com/tech-kenya/africastalkingsms.svg)](https://pkg.go.dev/github.com/tech-kenya/africastalkingsms)
 
 ## Africastalking Golang SMS library
 
@@ -11,7 +11,7 @@ This is a Golang library for sending SMS messages using the Africa's Talking API
 To install the library, use the following command:
 
 ```bash
-go get github.com/Tech-Kenya/africastalking-sms-lib@latest
+go get github.com/tech-kenya/africastalkingsms@latest
 ```
 
 ## To get started locally
@@ -19,13 +19,13 @@ go get github.com/Tech-Kenya/africastalking-sms-lib@latest
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Tech-Kenya/africastalking-sms-lib.git
+git clone https://github.com/tech-kenya/africastalkingsms.git
 ```
 
 2. cd into the project directory
 
 ```bash
-cd africastalking-sms-lib/demo
+cd africastalkingsms/demo
 ```
 
 3. Copy the `.env.example` file to `.env` and fill in your Africa's Talking credentials:
@@ -61,8 +61,8 @@ go run .
 
 ## Usage
 
-
 see demo/api for a simple API example
+
 ```bash
 go mod tidy #download dependencies
 ```
@@ -72,7 +72,6 @@ go run . #start the api server
 ```
 
 POST Request
-
 
 ```bash
 curl -X POST http://localhost:8080/send-sms \
@@ -84,6 +83,7 @@ curl -X POST http://localhost:8080/send-sms \
 ```
 
 Response
+
 ```json
 {"Message":"Sent to 1/1 Total Cost: KES 0.8000 Message parts: 1","Recipients":[{"number":"+254....","cost":"KES 0.8000","status":"Success","statusCode":101,"messageId":"ATXid_ad8a62b0680a41351b1ea383b9b66fd1"}]}
 ```
